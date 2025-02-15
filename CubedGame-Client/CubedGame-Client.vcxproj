@@ -78,7 +78,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WL_PLATFORM_WINDOWS;WL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_DEFINE_MATH_OPERATORS;WL_PLATFORM_WINDOWS;WL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\CubedGame-Common\Source;..\Walnut\vendor\imgui;..\Walnut\vendor\glfw\include;..\Walnut\Walnut\Source;..\Walnut\Walnut\Platform\GUI;C:\VulkanSDK\1.3.290.0\Include;..\vendor\glm;..\Walnut\Walnut-Modules\Walnut-Networking\Source;..\Walnut\Walnut-Modules\Walnut-Networking\vendor\GameNetworkingSockets\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -101,7 +101,7 @@ IF EXIST "..\Walnut\Walnut-Modules\Walnut-Networking\vendor\GameNetworkingSocket
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WL_PLATFORM_WINDOWS;WL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_DEFINE_MATH_OPERATORS;WL_PLATFORM_WINDOWS;WL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\CubedGame-Common\Source;..\Walnut\vendor\imgui;..\Walnut\vendor\glfw\include;..\Walnut\Walnut\Source;..\Walnut\Walnut\Platform\GUI;C:\VulkanSDK\1.3.290.0\Include;..\vendor\glm;..\Walnut\Walnut-Modules\Walnut-Networking\Source;..\Walnut\Walnut-Modules\Walnut-Networking\vendor\GameNetworkingSockets\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
@@ -130,7 +130,7 @@ IF EXIST "..\Walnut\Walnut-Modules\Walnut-Networking\vendor\GameNetworkingSocket
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WL_PLATFORM_WINDOWS;WL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_DEFINE_MATH_OPERATORS;WL_PLATFORM_WINDOWS;WL_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\CubedGame-Common\Source;..\Walnut\vendor\imgui;..\Walnut\vendor\glfw\include;..\Walnut\Walnut\Source;..\Walnut\Walnut\Platform\GUI;C:\VulkanSDK\1.3.290.0\Include;..\vendor\glm;..\Walnut\Walnut-Modules\Walnut-Networking\Source;..\Walnut\Walnut-Modules\Walnut-Networking\vendor\GameNetworkingSockets\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Full</Optimization>

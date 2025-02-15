@@ -6,6 +6,8 @@ workspace "CubedGame-Client"
    -- Workspace-wide build options for MSVC
    filter "system:windows"
       buildoptions { "/EHsc", "/Zc:preprocessor", "/Zc:__cplusplus" }
+    
+   defines { "IMGUI_DEFINE_MATH_OPERATORS" }
 
 -- Directories
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
