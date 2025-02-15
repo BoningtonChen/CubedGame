@@ -157,6 +157,7 @@ IF EXIST "..\Walnut\Walnut-Modules\Walnut-Networking\vendor\GameNetworkingSocket
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source\HeadlessConsole.h" />
+    <ClInclude Include="Source\ServerLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\CubedGameApp.cpp">
@@ -169,6 +170,7 @@ IF EXIST "..\Walnut\Walnut-Modules\Walnut-Networking\vendor\GameNetworkingSocket
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
+    <ClCompile Include="Source\ServerLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CubedGame-Common\CubedGame-Common-Headless.vcxproj">
