@@ -13,12 +13,12 @@ project "CubedGame-Client"
 
       "../Walnut/vendor/imgui",
       "../Walnut/vendor/glfw/include",
-
+      "../Walnut/vendor/glm",
+      
       "../Walnut/Walnut/Source",
       "../Walnut/Walnut/Platform/GUI",
 
       "%{IncludeDir.VulkanSDK}",
-      "%{IncludeDir.glm}",
 
       -- Walnut-Networking
       "../Walnut/Walnut-Modules/Walnut-Networking/Source",
