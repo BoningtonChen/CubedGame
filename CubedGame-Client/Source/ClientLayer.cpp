@@ -1,9 +1,11 @@
 #include "ClientLayer.h"
 
+#include "Walnut/Input/Input.h"
+#include "Walnut/ImGui/ImGuiTheme.h"
+
 #include "imgui.h"
 #include "imgui_internal.h"
-
-#include "Walnut/Input/Input.h"
+#include "misc/cpp/imgui_stdlib.h"
 
 namespace CubedGame
 {
@@ -21,12 +23,20 @@ namespace CubedGame
 
 	void ClientLayer::OnAttach()
 	{
+		m_Client.SetDataReceivedCallback(
+			[this](const Walnut::Buffer buffer)	
+			{
+				OnDataReceived(buffer);
+			});
 	}
 	void ClientLayer::OnDetach()
 	{
 	}
 	void ClientLayer::OnUpdate(float ts)
 	{
+		if (m_Client.GetConnectionStatus() != Walnut::Client::ConnectionStatus::Connected)
+			return;
+
 		glm::vec2 dir{ 0.0f, 0.0f };
 
 		if (Walnut::Input::IsKeyDown(Walnut::KeyCode::W)) dir.y = -1;
@@ -55,12 +65,49 @@ namespace CubedGame
 	}
 	void ClientLayer::OnUIRender()
 	{
+		auto connectionStatus = m_Client.GetConnectionStatus();
+		if (connectionStatus == Walnut::Client::ConnectionStatus::Connected)
+		{
+			// play the game
+			DrawRect(
+				m_PlayerPosition,
+				{ 50.0f, 50.0f },
+				0xffff00ff
+			);
+		}
+		else
+		{
+			bool readOnly = 
+				connectionStatus != Walnut::Client::ConnectionStatus::Disconnected;
+
+			ImGui::Begin("Connect to Server");
+
+			ImGui::InputText("Server address", &m_ServerAddress);
+			if (connectionStatus == Walnut::Client::ConnectionStatus::FailedToConnect)
+				ImGui::TextColored(
+					ImColor(Walnut::UI::Colors::Theme::error),
+					"Failed to Connect."
+				);
+			else if (connectionStatus == Walnut::Client::ConnectionStatus::Connecting)
+				ImGui::TextColored(
+					ImColor(Walnut::UI::Colors::Theme::textDarker),
+					"Connecting..."
+				);
+
+			if (ImGui::Button("Connect"))
+			{
+				m_Client.ConnectToServer(m_ServerAddress);
+			}
+
+			ImGui::End();
+		}
+
 		ImGui::ShowDemoWindow();
 
-		DrawRect(
-			m_PlayerPosition,
-			{ 50.0f, 50.0f },
-			0xffff00ff
-		);
+	}
+
+	void ClientLayer::OnDataReceived(const Walnut::Buffer buffer)
+	{
+		
 	}
 }
