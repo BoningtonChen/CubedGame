@@ -1,3 +1,7 @@
+# User Added ignores
+/bin
+/bin-int
+
 # C++ Code ignores
 # Prerequisites
 *.d  
