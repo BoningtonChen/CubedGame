@@ -3,11 +3,17 @@
 #include <chrono>
 
 #include "Walnut/Core/Log.h"
+#include "Walnut/Serialization/BufferStream.h"
+
+#include "ServerPacket.h"
 
 namespace CubedGame
 {
+	static Walnut::Buffer s_ScratchBuffer;
+
 	void ServerLayer::OnAttach()
 	{
+		s_ScratchBuffer.Allocate(10 * 1024 * 1024);		// 10 MB
 		m_Console.SetMessageSendCallback(
 			[this](std::string_view message) { OnConsoleMessage(message); }
 		);
@@ -55,6 +61,15 @@ namespace CubedGame
 	void ServerLayer::OnClientConnected(const Walnut::ClientInfo& clientInfo)
 	{
 		WL_INFO_TAG("Server", "Client connected! ID = {}", clientInfo.ID);
+
+		Walnut::BufferStreamWriter stream(s_ScratchBuffer);
+		// packet type - connected
+		// id
+
+		stream.WriteRaw(PacketType::ClientConnect);
+		stream.WriteRaw(clientInfo.ID);
+
+		m_Server.SendBufferToClient(clientInfo.ID, stream.GetBuffer());
 	}
 
 	void ServerLayer::OnClientDisconnected(const Walnut::ClientInfo& clientInfo)
@@ -66,6 +81,23 @@ namespace CubedGame
 		const Walnut::ClientInfo& clientInfo, 
 		const Walnut::Buffer& buffer
 	) {
-		
+		Walnut::BufferStreamReader stream(buffer);
+
+		PacketType type;
+		stream.ReadRaw(type);
+		switch (type)
+		{
+		case PacketType::ClientUpdate:
+			glm::vec2 pos, vel;
+			stream.ReadRaw<glm::vec2>(pos);
+			stream.ReadRaw<glm::vec2>(vel);
+
+			WL_INFO_TAG(
+				"Server", 
+				"{}, {} - {}, {}", 
+				pos.x, pos.y,
+				vel.x, vel.y
+				);
+		}
 	}
 }

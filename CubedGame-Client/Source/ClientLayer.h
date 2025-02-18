@@ -29,5 +29,6 @@ namespace CubedGame
 		std::string m_ServerAddress;
 
 		Walnut::Client m_Client;
+		uint32_t m_PlayerID = 0;
 	};
 }

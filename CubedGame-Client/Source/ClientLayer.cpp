@@ -5,10 +5,17 @@
 
 #include "imgui.h"
 #include "imgui_internal.h"
+
 #include "misc/cpp/imgui_stdlib.h"
+
+#include "Walnut/Serialization/BufferStream.h"
+
+#include "ServerPacket.h"
 
 namespace CubedGame
 {
+	static Walnut::Buffer s_ScratchBuffer;
+
 	static void DrawRect(
 		glm::vec2 position,
 		glm::vec2 size, 
@@ -23,6 +30,8 @@ namespace CubedGame
 
 	void ClientLayer::OnAttach()
 	{
+		s_ScratchBuffer.Allocate(10 * 1024 * 1024);		// 10 MB
+
 		m_Client.SetDataReceivedCallback(
 			[this](const Walnut::Buffer buffer)	
 			{
@@ -59,6 +68,13 @@ namespace CubedGame
 			glm::vec2(0.0f), 
 			10.0f * ts
 		);
+
+		Walnut::BufferStreamWriter stream(s_ScratchBuffer);
+		stream.WriteRaw(PacketType::ClientUpdate);
+		stream.WriteRaw<glm::vec2>(m_PlayerPosition);
+		stream.WriteRaw<glm::vec2>(m_PlayerVelocity);
+
+		m_Client.SendBuffer(stream.GetBuffer());
 	}
 	void ClientLayer::OnRender()
 	{
@@ -103,11 +119,29 @@ namespace CubedGame
 		}
 
 		ImGui::ShowDemoWindow();
-
 	}
 
 	void ClientLayer::OnDataReceived(const Walnut::Buffer buffer)
 	{
-		
+		Walnut::BufferStreamReader stream(buffer);
+
+		PacketType type;
+		stream.ReadRaw(type);
+		switch (type)
+		{
+		case PacketType::ClientConnect:
+			uint32_t idFromServer;
+			stream.ReadRaw<uint32_t>(idFromServer);
+
+			// WL_INFO("We have connected! Server points out our ID is {}", idFromServer);
+			// WL_INFO("Our ID should be {}", m_Client.GetID());
+			m_PlayerID = idFromServer;
+
+			break;
+
+		case PacketType::ClientUpdate:
+			// list of all the clients
+			break;
+		}
 	}
 }
