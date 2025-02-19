@@ -88,16 +88,15 @@ namespace CubedGame
 		switch (type)
 		{
 		case PacketType::ClientUpdate:
-			glm::vec2 pos, vel;
-			stream.ReadRaw<glm::vec2>(pos);
-			stream.ReadRaw<glm::vec2>(vel);
+			m_PlayerDataMutex.lock();
+			{
+				PlayerData& data = m_PlayerData[clientInfo.ID];
+				stream.ReadRaw(data.Position);
+				stream.ReadRaw(data.Velocity);
+			}
+			m_PlayerDataMutex.unlock();
 
-			WL_INFO_TAG(
-				"Server", 
-				"{}, {} - {}, {}", 
-				pos.x, pos.y,
-				vel.x, vel.y
-				);
+			break;
 		}
 	}
 }
