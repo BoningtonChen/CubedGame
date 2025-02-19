@@ -7,6 +7,7 @@
 #include "Walnut/Networking/Server.h"
 
 #include <glm/vec2.hpp>
+
 #include <map>
 
 namespace CubedGame

@@ -90,12 +90,25 @@ namespace CubedGame
 				{ 50.0f, 50.0f },
 				0xffff00ff
 			);
+
+			m_PlayerDataMutex.lock();
+			std::map<uint32_t, PlayerData> playerData = m_PlayerData;
+			m_PlayerDataMutex.unlock();
+
+			for (const auto& [id, data] : playerData)
+			{
+				if (id == m_PlayerID)
+					continue;
+
+				DrawRect(
+					data.Position,
+					{ 50.0f, 50.0f },
+					0xff00ff00
+				);
+			}
 		}
 		else
 		{
-			bool readOnly = 
-				connectionStatus != Walnut::Client::ConnectionStatus::Disconnected;
-
 			ImGui::Begin("Connect to Server");
 
 			ImGui::InputText("Server address", &m_ServerAddress);
@@ -140,7 +153,9 @@ namespace CubedGame
 			break;
 
 		case PacketType::ClientUpdate:
-			// list of all the clients
+			m_PlayerDataMutex.lock();
+			stream.ReadMap(m_PlayerData);
+			m_PlayerDataMutex.unlock();
 			break;
 		}
 	}

@@ -41,6 +41,17 @@ namespace CubedGame
 	}
 	void ServerLayer::OnUpdate(float ts)
 	{
+		Walnut::BufferStreamWriter stream(s_ScratchBuffer);
+		stream.WriteRaw(PacketType::ClientUpdate);
+
+		m_PlayerDataMutex.lock();
+		{
+			stream.WriteMap(m_PlayerData);
+		}
+		m_PlayerDataMutex.unlock();
+
+		m_Server.SendBufferToAllClients(s_ScratchBuffer);
+
 		using namespace std::chrono_literals;
 		std::this_thread::sleep_for(5ms);
 	}
